@@ -3,3 +3,4 @@
 All files here are built from the [`source`](https://github.com/kermage/kermage.github.io/tree/source) branch.
 
 Copyright &copy; 2017 [Gene Alyson Fortunado Torcende](https://github.com/kermage)
+Licensed under [MIT](https://github.com/kermage/kermage.github.io/blob/master/LICENSE).
