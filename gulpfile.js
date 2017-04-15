@@ -11,7 +11,7 @@ gulp.task('images', function() {
 			plugins.imagemin.gifsicle({interlaced: true})
 		]))
 		.pipe(plugins.plumber.stop())
-		.pipe(gulp.dest('images'))
+		.pipe(gulp.dest('master/images'))
 		.pipe(browserSync.stream())
 		.pipe(plugins.notify({message: 'Imagemin task complete', onLast: true }));
 });
@@ -25,20 +25,20 @@ gulp.task('concat', function() {
 		.pipe(plugins.concat('script.js'))
 		.pipe(plugins.sourcemaps.write('/'))
 		.pipe(plugins.plumber.stop())
-		.pipe(gulp.dest('js'))
+		.pipe(gulp.dest('master/js'))
 		.pipe(browserSync.stream())
 		.pipe(plugins.notify({message: 'Concat task complete', onLast: true }));
 });
 
 gulp.task('uglify', function() {
-	return gulp.src(['js/*.js','!js/*.min.js'])
+	return gulp.src(['master/js/*.js','!master/js/*.min.js'])
 		.pipe(plugins.plumber({errorHandler: plugins.notify.onError("Error: <%= error.message %>")}))
 		.pipe(plugins.uglify({
 			preserveComments: 'license'
 		}))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.plumber.stop())
-		.pipe(gulp.dest('js'))
+		.pipe(gulp.dest('master/js'))
 		.pipe(browserSync.stream())
 		.pipe(plugins.notify({message: 'Uglify task complete', onLast: true }));
 });
@@ -62,20 +62,20 @@ gulp.task('sass', function() {
 		}))
 		.pipe(plugins.sourcemaps.write('/'))
 		.pipe(plugins.plumber.stop())
-		.pipe(gulp.dest('css'))
+		.pipe(gulp.dest('master/css'))
 		.pipe(browserSync.stream())
 		.pipe(plugins.notify({message: 'Sass task complete', onLast: true }));
 });
 
 gulp.task('cssnano', function() {
-	return gulp.src(['css/*.css','!css/*.min.css'])
+	return gulp.src(['master/css/*.css','!master/css/*.min.css'])
 		.pipe(plugins.plumber({errorHandler: plugins.notify.onError("Error: <%= error.message %>")}))
 		.pipe(plugins.cssnano({
 			discardComments: {removeAllButFirst:true}
 		}))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.plumber.stop())
-		.pipe(gulp.dest('css'))
+		.pipe(gulp.dest('master/css'))
 		.pipe(browserSync.stream())
 		.pipe(plugins.notify({message: 'Cssnano task complete', onLast: true }));
 });
@@ -92,8 +92,7 @@ gulp.task('watch', function() {
 
 gulp.task('serve', ['watch'], function() {
 	browserSync.init({
-		files: ['**/*.html'],
-		server: true,
+		server: 'master',
 		open: false,
 		notify: false
 	});
