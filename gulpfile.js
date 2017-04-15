@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
 	browserSync = require('browser-sync'),
-	plugins = require('gulp-load-plugins')({ camelize: true });
+	plugins = require('gulp-load-plugins')({camelize: true});
 
 gulp.task('html', function() {
 	return gulp.src('contents/**/*.html')
@@ -12,7 +12,7 @@ gulp.task('html', function() {
 		.pipe(plugins.plumber.stop())
 		.pipe(gulp.dest('master'))
 		.pipe(browserSync.stream())
-		.pipe(plugins.notify({message: 'HTMLMin task complete', onLast: true }));
+		.pipe(plugins.notify({message: 'HTMLMin task complete', onLast: true}));
 });
 
 gulp.task('images', function() {
@@ -26,7 +26,7 @@ gulp.task('images', function() {
 		.pipe(plugins.plumber.stop())
 		.pipe(gulp.dest('master/images'))
 		.pipe(browserSync.stream())
-		.pipe(plugins.notify({message: 'Imagemin task complete', onLast: true }));
+		.pipe(plugins.notify({message: 'Imagemin task complete', onLast: true}));
 });
 
 gulp.task('concat', function() {
@@ -35,12 +35,12 @@ gulp.task('concat', function() {
 		.pipe(plugins.jshint())
 		.pipe(plugins.jshint.reporter('jshint-stylish'))
 		.pipe(plugins.sourcemaps.init())
-		.pipe(plugins.concat('script.js'))
+		.pipe(plugins.concat('main.js'))
 		.pipe(plugins.sourcemaps.write('/'))
 		.pipe(plugins.plumber.stop())
 		.pipe(gulp.dest('master/js'))
 		.pipe(browserSync.stream())
-		.pipe(plugins.notify({message: 'Concat task complete', onLast: true }));
+		.pipe(plugins.notify({message: 'Concat task complete', onLast: true}));
 });
 
 gulp.task('uglify', function() {
@@ -53,7 +53,7 @@ gulp.task('uglify', function() {
 		.pipe(plugins.plumber.stop())
 		.pipe(gulp.dest('master/js'))
 		.pipe(browserSync.stream())
-		.pipe(plugins.notify({message: 'Uglify task complete', onLast: true }));
+		.pipe(plugins.notify({message: 'Uglify task complete', onLast: true}));
 });
 
 gulp.task('scripts', ['concat'], function() {
@@ -77,20 +77,20 @@ gulp.task('sass', function() {
 		.pipe(plugins.plumber.stop())
 		.pipe(gulp.dest('master/css'))
 		.pipe(browserSync.stream())
-		.pipe(plugins.notify({message: 'Sass task complete', onLast: true }));
+		.pipe(plugins.notify({message: 'Sass task complete', onLast: true}));
 });
 
 gulp.task('cssnano', function() {
 	return gulp.src(['master/css/*.css','!master/css/*.min.css'])
 		.pipe(plugins.plumber({errorHandler: plugins.notify.onError("Error: <%= error.message %>")}))
 		.pipe(plugins.cssnano({
-			discardComments: {removeAllButFirst:true}
+			discardComments: {removeAllButFirst: true}
 		}))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.plumber.stop())
 		.pipe(gulp.dest('master/css'))
 		.pipe(browserSync.stream())
-		.pipe(plugins.notify({message: 'Cssnano task complete', onLast: true }));
+		.pipe(plugins.notify({message: 'Cssnano task complete', onLast: true}));
 });
 
 gulp.task('styles', ['sass'], function() {
