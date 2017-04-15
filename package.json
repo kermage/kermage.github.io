@@ -29,6 +29,8 @@
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^2.1.2",
     "jshint": "^2.9.4",
-    "jshint-stylish": "^2.2.1"
+    "jshint-stylish": "^2.2.1",
+    "normalize-scss": "^6.0.0",
+    "susy": "^2.2.12"
   }
 }
