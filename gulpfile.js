@@ -1,10 +1,12 @@
 var gulp = require('gulp'),
+	gutil = require('gulp-util'),
 	browserSync = require('browser-sync'),
 	plugins = require('gulp-load-plugins')({camelize: true});
 
 gulp.task('html', function() {
 	return gulp.src('contents/**/*.html')
 		.pipe(plugins.plumber({errorHandler: plugins.notify.onError("Error: <%= error.message %>")}))
+		.pipe(gulp.dest('debug'))
 		.pipe(plugins.htmlmin({
 			collapseWhitespace: true,
 			removeComments: true
@@ -18,6 +20,7 @@ gulp.task('html', function() {
 gulp.task('images', function() {
 	return gulp.src('assets/images/*.{gif,jpg,png}')
 		.pipe(plugins.plumber({errorHandler: plugins.notify.onError("Error: <%= error.message %>")}))
+		.pipe(gulp.dest('debug'))
 		.pipe(plugins.imagemin([
 			plugins.imagemin.optipng({optimizationLevel: 7}),
 			plugins.imagemin.jpegtran({progressive: true}),
@@ -38,13 +41,13 @@ gulp.task('concat', function() {
 		.pipe(plugins.concat('main.js'))
 		.pipe(plugins.sourcemaps.write('/'))
 		.pipe(plugins.plumber.stop())
-		.pipe(gulp.dest('master/js'))
+		.pipe(gulp.dest('debug/js'))
 		.pipe(browserSync.stream())
 		.pipe(plugins.notify({message: 'Concat task complete', onLast: true}));
 });
 
 gulp.task('uglify', function() {
-	return gulp.src(['master/js/*.js','!master/js/*.min.js'])
+	return gulp.src(['debug/js/*.js','!debug/js/*.min.js'])
 		.pipe(plugins.plumber({errorHandler: plugins.notify.onError("Error: <%= error.message %>")}))
 		.pipe(plugins.uglify({
 			preserveComments: 'license'
@@ -75,13 +78,13 @@ gulp.task('sass', function() {
 		}))
 		.pipe(plugins.sourcemaps.write('/'))
 		.pipe(plugins.plumber.stop())
-		.pipe(gulp.dest('master/css'))
+		.pipe(gulp.dest('debug/css'))
 		.pipe(browserSync.stream())
 		.pipe(plugins.notify({message: 'Sass task complete', onLast: true}));
 });
 
 gulp.task('cssnano', function() {
-	return gulp.src(['master/css/*.css','!master/css/*.min.css'])
+	return gulp.src(['debug/css/*.css','!debug/css/*.min.css'])
 		.pipe(plugins.plumber({errorHandler: plugins.notify.onError("Error: <%= error.message %>")}))
 		.pipe(plugins.cssnano({
 			discardComments: {removeAllButFirst: true}
@@ -105,8 +108,9 @@ gulp.task('watch', function() {
 });
 
 gulp.task('serve', ['watch'], function() {
+	base = (gutil.env.prod ? 'master' : 'debug')
 	browserSync.init({
-		server: 'master',
+		server: base,
 		open: false,
 		notify: false
 	});
