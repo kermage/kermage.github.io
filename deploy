@@ -2,9 +2,15 @@
 
 FILELIST=`ls ./master/`
 
+if [ "$( git diff --shortstat )" ]; then
+	echo 'Exiting. Branch is dirty, commit/stash changes first'
+	exit 1
+fi
+
 git checkout master
 cp -rf ./master/* ./
 git add $FILELIST
 git commit -m "Build $( date +'%Y-%m-%d %H:%M:%S' )"
 git push origin master
 git checkout source
+rm -rf ./master/*
