@@ -1,9 +1,14 @@
 #!/bin/bash
 
-FILELIST=`ls ./master/`
-
 if [ "$( git diff --shortstat )" ]; then
 	echo 'Exiting. Branch is dirty, commit/stash changes first'
+	exit 1
+fi
+
+FILELIST=`ls ./master/`
+
+if [ -z "$FILELIST" ]; then
+	echo 'Exiting. Build is clean, nothing to deploy'
 	exit 1
 fi
 
