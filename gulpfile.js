@@ -7,6 +7,7 @@ gulp.task('html', function() {
 	return gulp.src('contents/**/*.html')
 		.pipe(plugins.plumber({errorHandler: plugins.notify.onError("Error: <%= error.message %>")}))
 		.pipe(gulp.dest('debug'))
+		.pipe(plugins.replace(/="(.*)((?:(?!.min))).(js|css)"/g, '="$1$2.min.$3"'))
 		.pipe(plugins.htmlmin({
 			collapseWhitespace: true,
 			removeComments: true
