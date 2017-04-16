@@ -1,15 +1,10 @@
 #!/bin/bash
 
-TMPDIR=`mktemp -d`
-TMPFILE=`mktemp`
+FILELIST=`ls ./master/`
 
-ls ./master/ > $TMPFILE
-cp -rf ./master/* $TMPDIR
 git checkout master
-cp -rf ${TMPDIR}/* ./
-git add `cat $TMPFILE`
+cp -rf ./master/* ./
+git add $FILELIST
 git commit -m "Build $( date +'%Y-%m-%d %H:%M:%S' )"
 git push origin master
 git checkout source
-
-rm -rf $TMPDIR $TMPFILE
